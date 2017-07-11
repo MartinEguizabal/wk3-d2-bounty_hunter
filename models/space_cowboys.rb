@@ -53,9 +53,17 @@ class SpaceCowboy
 		sql = ("SELECT * FROM space_cowboys;")
 		space_cowboys = db.exec(sql)
 		db.close
-		binding.pry
+		# binding.pry
 		bounties = space_cowboys.map {|cowboy| SpaceCowboy.new(cowboy)}
 
 		return bounties
+	end
+
+	def self.find(find_name)
+		db = PG.connect(dbname: 'space_cowboys', host: 'localhost')
+		sql = ("SELECT * FROM space_cowboys where name = '#{find_name}'")
+		space_cowboys = db.exec(sql)
+		db.close
+		return space_cowboys.map {|x| SpaceCowboy.new(x)}
 	end
 end
