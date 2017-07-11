@@ -1,15 +1,16 @@
 require('pg')
+require('pry-byebug')
 
 class SpaceCowboy
 	
 	attr_accessor :name, :bounty_value, :homeworld, :favourite_weapon
 
 	def initialize(options)
-		@name = options[:name]
-		@bounty_value = options[:bounty_value]
-		@homeworld = options[:homeworld]
-		@favourite_weapon = options[:favourite_weapon]
-		@id = options[:id]
+		@name = options["name"]
+		@bounty_value = options["bounty_value"].to_i
+		@homeworld = options["homeworld"]
+		@favourite_weapon = options["favourite_weapon"]
+		@id = options["id"].to_i if options["id"]
 	end
 
 	def save()
@@ -52,6 +53,9 @@ class SpaceCowboy
 		sql = ("SELECT * FROM space_cowboys;")
 		space_cowboys = db.exec(sql)
 		db.close
-		return space_cowboys.map {|cowboy| SpaceCowboy.new(cowboy)}
+		binding.pry
+		bounties = space_cowboys.map {|cowboy| SpaceCowboy.new(cowboy)}
+
+		return bounties
 	end
 end
